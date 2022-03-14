@@ -1,3 +1,10 @@
+"""Program: LaswellAshleySdevFinal
+Author: Ashley Laswell
+Last date modified: 3/14/22
+The purpose of this program is to create music player GUI with tkinter.
+A song is chosen from the list and you can play or pause the music.
+There is also an about section in a new window and an exit button.
+"""
 #import tkinter, pygame for mixer, and PIL for image manipulation
 import tkinter as tk
 from tkinter import *
@@ -17,6 +24,7 @@ class MusicPlayer:
     pygame.init()
     pygame.mixer.init()
 
+    #change track and status to string variables
     self.track = StringVar()
     self.status = StringVar()
 
@@ -30,7 +38,9 @@ class MusicPlayer:
     logo.title = ("This is the logo image")
     resize_logo = logo.resize((80, 80))
     logo_img = ImageTk.PhotoImage(resize_logo)
+    #place image in the label
     header_label = Label(image = logo_img, bg = "black")
+    #position the image
     header_label.place(x = 5, y = 10)
     header_label.image = logo_img
 
@@ -40,11 +50,13 @@ class MusicPlayer:
     album.title = ("This is the title image.")
     resize_album = album.resize((80, 80))
     album_img = ImageTk.PhotoImage(resize_album)
+    #place the image in the label
     header_label = Label(image = album_img, bg = "black")
+    #position the image
     header_label.place(x =780, y = 10)
     header_label.image = album_img
 
-    #frame for currently playing song and status
+    #title for song track frame
     track_frame = LabelFrame(self.root, text = "Song Track", font = ("Modern",  15,  "bold"), bg = "black", fg = "white")
     track_frame.place(x = 0, y = 100, width = 475, height = 100)
     song_track = Label(track_frame, textvariable = self.track, width = 20, anchor="w", font = ("Modern", 24, "bold"), bg = "black", fg = "pink").grid(row = 0, column = 0, padx = 0, pady = 0)
@@ -54,19 +66,23 @@ class MusicPlayer:
     button_frame = LabelFrame(self.root, text = "Controls", font = ("Modern", 15, "bold"), bg = "black", fg = "white")
     button_frame.place(x = 0, y = 200, width = 475, height = 75)
     
+    #button controls that are defined by methods below
     play_button = Button(button_frame, text = "PLAY", command = self.play_song, width = 4, height = 1, font = ("Modern", 16, "bold"), fg = "black", bg = "gold").grid(row = 0, column = 0, padx = 2, pady = 5)
     pause_button = Button(button_frame, text = "PAUSE", command = self.pause_song, width = 4, height = 1, font = ("Modern", 16, "bold"), fg = "black", bg = "gold").grid(row = 0, column = 1, padx = 2, pady = 5)
-    songs_button = Button(button_frame, text = "ABOUT", command = self.about_window, width = 4, height = 1, font = ("Modern", 16, "bold"), fg = "black", bg = "gold").grid(row = 0, column = 2, padx = 2, pady = 5)
+    #button opens new window that gives a description for the music player
+    about_button = Button(button_frame, text = "ABOUT", command = self.about_window, width = 4, height = 1, font = ("Modern", 16, "bold"), fg = "black", bg = "gold").grid(row = 0, column = 2, padx = 2, pady = 5)
     exit_button = Button(button_frame, text= "EXIT", command = root.destroy, width = 4, height = 1, font = ("Modern", 16, "bold"), fg = "black", bg = "gold").grid(row = 0, column = 3, padx = 2, pady = 5)
     
     #frame for listing playlist of songs that comes from folder
     songs_frame = LabelFrame(self.root, text = "Playlist", font = ("Modern", 15, "bold"), bg = "black", fg = "white")
     songs_frame.place(x = 475, y = 100, width = 400, height = 175)
     scroll_y = Scrollbar(songs_frame, orient = VERTICAL)
+    #uses listbox library to select song from from folder
     self.playlist = Listbox(songs_frame, yscrollcommand = scroll_y.set, selectbackground = "black", selectmode = SINGLE, font = ("Modern", 16, "bold"), bg = "black", fg = "pink")
     scroll_y.pack(side = RIGHT, fill = Y)
     scroll_y.config(command = self.playlist.yview)
     self.playlist.pack(fill = BOTH)
+    #takes songs from music directory in the folder
     os.chdir("music/")
     songtracks = os.listdir()
     for track in songtracks:
